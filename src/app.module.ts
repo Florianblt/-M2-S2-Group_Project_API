@@ -11,12 +11,12 @@ import { ConfigModule } from './modules/core/config/config.module';
     // TODO Change .env
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'db',
+      host: process.env.DATABASE_HOST,
       // tslint:disable-next-line:radix
-      port: 5432,
-      username: 'typeormtest',
-      password: 'password',
-      database: 'typeormtest',
+      port: parseInt(process.env.DATABASE_PORT),
+      username: process.env.DATABASE_USER,
+      password: process.env.DATABASE_PASSWORD,
+      database: process.env.DATABASE_NAME,
       entities: ['src/**/**.entity{.ts,.js}'],
       synchronize: true,
     }),
