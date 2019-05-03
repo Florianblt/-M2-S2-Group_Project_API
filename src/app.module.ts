@@ -11,7 +11,7 @@ import { ConfigModule } from './modules/core/config/config.module';
     // TODO Change .env
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'localhost',
+      host: 'db',
       // tslint:disable-next-line:radix
       port: 5432,
       username: 'typeormtest',

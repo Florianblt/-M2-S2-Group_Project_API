@@ -1,17 +1,38 @@
 version: '3.5'
 
 services:
+  group-poject-api:
+    build:
+      context: ../.
+      dockerfile: Dockerfile
+    ports:
+      - 3030:3000
+    depends_on:
+      - db
+    networks:
+      - intra
+      - web
+
   db:
     image: 'postgres:10'
     restart: 'always'
     ports:
-      - '5432:5432'
+      - 5432:5432
     environment:
       POSTGRES_PASSWORD: 'password'
       POSTGRES_USER: 'typeormtest'
+    networks:
+      - intra
 
   adminer:
     image: 'adminer'
     restart: 'always'
     ports:
-      - '8080:8080'
+      - 8080:8080
+    networks:
+      - intra
+
+networks:
+  intra:
+  web:
+    external: true

@@ -1,6 +1,6 @@
-import { DbAuditModel } from '../../utils/dbmodel.model';
 import { Column, Entity, ManyToMany } from 'typeorm';
 import { User } from './users.entity';
+import { DbAuditModel } from '../../utils/dbmodel.model';
 
 @Entity()
 export class Role extends DbAuditModel {
