@@ -2,9 +2,7 @@ version: '3.5'
 
 services:
   group-poject-api:
-    build:
-      context: ../.
-      dockerfile: Dockerfile
+    image: 'florianblt/auto-check-pres-api:latest'
     ports:
       - 3030:3000
     depends_on:
