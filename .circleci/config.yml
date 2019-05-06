@@ -84,9 +84,9 @@ workflows:
       - back-test-unit:
           requires:
             - build
-      - back-test-e2e:
-          requires:
-            - build
+      # - back-test-e2e:
+      #     requires:
+      #       - build
       - lint:
           requires:
             - build
@@ -94,5 +94,5 @@ workflows:
           requires:
             - build
             - lint
-            - back-test-e2e
+            # - back-test-e2e
             - back-test-unit
