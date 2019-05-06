@@ -7,10 +7,10 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys:
-            - $CACHE_VERSION-dependencies-{{ checksum "package.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - $CACHE_VERSION-dependencies-
+        keys:
+          - $CACHE_VERSION-dependencies-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - $CACHE_VERSION-dependencies-
       - run: npm i -g node-gyp && npm i
       - save_cache:
         paths:
