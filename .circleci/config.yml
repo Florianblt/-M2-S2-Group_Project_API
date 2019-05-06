@@ -23,7 +23,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-        key: $CACHE_VERSION-dependencies-{{ checksum "package.json" }}
+          key: $CACHE_VERSION-dependencies-{{ checksum "package.json" }}
       - run: npm run lint
       - run: npm run format
 
