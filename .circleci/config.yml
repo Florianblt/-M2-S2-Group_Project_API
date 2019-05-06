@@ -18,7 +18,7 @@ jobs:
         key: $CACHE_VERSION-dependencies-{{ checksum "package.json" }}
   lint:
     docker:
-      - image: circleci/node:dubnium-browsers
+        - image: circleci/node:dubnium-browsers
       working_directory: ~/repo
       steps:
         - checkout
