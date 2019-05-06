@@ -12,10 +12,10 @@ jobs:
           # fallback to using the latest cache if no exact match is found
         - $CACHE_VERSION-dependencies-
     - run: npm i -g node-gyp && npm i
-    - save-cache:
-      paths:
-        - node-modules
-        key: $CACHE_VERSION-dependencies-{{ checksum "package.json" }}   
+    - save_cache:
+        paths:
+          - node_modules
+        key: $CACHE_VERSION-dependencies-{{ checksum "package.json" }}
   lint:
     docker:
       - image: circleci/node:dubnium-browsers
@@ -23,7 +23,7 @@ jobs:
       steps:
         - checkout
         - restore_cache:
-          key: $CACHE_VERSION-dependencies-{{ checksum "package.json" }}
+            key: $CACHE_VERSION-dependencies-{{ checksum "package.json" }}
         - run: npm run lint
         - run: npm run format
   back-test-unit:
