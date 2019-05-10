@@ -5,10 +5,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './modules/core/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
 import { ConfigModule } from './modules/core/config/config.module';
+import { ClassroomModule } from './modules/classroom/classroom.module';
+import { RaspberryModule } from './modules/raspberry/raspberry.module';
 
 @Module({
   imports: [
-    // TODO Change .env
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DATABASE_HOST,
@@ -23,6 +24,8 @@ import { ConfigModule } from './modules/core/config/config.module';
     AuthModule,
     UsersModule,
     ConfigModule,
+    ClassroomModule,
+    RaspberryModule,
   ],
   controllers: [AppController],
   providers: [AppService],
