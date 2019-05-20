@@ -1,5 +1,14 @@
 import { ApiUseTags, ApiBearerAuth } from '@nestjs/swagger';
-import { Body, Controller, Get, Post, UseGuards, Logger } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  UseGuards,
+  Logger,
+  UseInterceptors,
+  ClassSerializerInterceptor,
+} from '@nestjs/common';
 import { LoginDto, TokenDto } from './auth.dto';
 import { AuthService } from './auth.service';
 import { User } from '../../users/users.entity';
@@ -19,22 +28,25 @@ export class AuthController {
   ) {}
 
   @Post('login')
+  @UseInterceptors(ClassSerializerInterceptor)
   async signIn(@Body() userLogin: LoginDto): Promise<TokenDto> {
     this.logger.log(`Post /login`);
     const token = await this.authService.signIn(
       userLogin.email,
       userLogin.password,
     );
-    return { token };
+    return token;
   }
 
   @Post('register')
+  @UseInterceptors(ClassSerializerInterceptor)
   async registerUser(@Body() userRegister: UserDtoRegister): Promise<User> {
     this.logger.log(`Post /register`);
     return this.userService.saveNew(userRegister);
   }
 
   @Get('me')
+  @UseInterceptors(ClassSerializerInterceptor)
   @ApiBearerAuth()
   @UseGuards(AuthGuard())
   async getMe(@CurrentUser() loggedUser: User) {

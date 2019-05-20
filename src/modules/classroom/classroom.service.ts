@@ -16,8 +16,9 @@ export class ClassroomService {
     return this.classroomRepository.find({});
   }
 
-  async getOneById(id: number): Promise<Optional<Classroom>> {
-    return this.classroomRepository.findOneById(id);
+  async getOneById(id: number): Promise<Classroom> {
+    const classroom = await this.classroomRepository.findOneById(id);
+    return classroom.orElseThrow(() => new NotFoundException());
   }
 
   async create(newClassroom: NewClassroomDto): Promise<Classroom> {

@@ -10,6 +10,8 @@ import {
   Put,
   UseGuards,
   Logger,
+  UseInterceptors,
+  ClassSerializerInterceptor,
 } from '@nestjs/common';
 import { User } from './users.entity';
 import { UserService } from './users.service';
@@ -31,6 +33,7 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
+  @UseInterceptors(ClassSerializerInterceptor)
   @ApiResponse({
     status: 200,
     description: 'Get a list of all User.',
@@ -54,6 +57,7 @@ export class UserController {
   }
 
   @Get(':id')
+  @UseInterceptors(ClassSerializerInterceptor)
   @ApiResponse({
     status: 200,
     description: 'The User with the matching id',

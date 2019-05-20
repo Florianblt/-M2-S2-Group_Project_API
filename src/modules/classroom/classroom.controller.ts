@@ -5,22 +5,21 @@ import {
   Get,
   Param,
   ParseIntPipe,
-  NotFoundException,
   Post,
   Body,
   Put,
   Delete,
 } from '@nestjs/common';
-import { ApiUseTags, ApiResponse } from '@nestjs/swagger';
+import { ApiUseTags, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { ClassroomService } from './classroom.service';
 import { Classroom } from './classroom.entity';
 import { NewClassroomDto } from './classroom.dto';
-import { async } from 'rxjs/internal/scheduler/async';
+import { AuthGuard } from '@nestjs/passport';
 
 @ApiUseTags(`Classroom`)
 @Controller(`classroom`)
-// @ApiBearerAuth()
-// @UseGuards(AuthGuard())
+@ApiBearerAuth()
+@UseGuards(AuthGuard())
 export class ClassroomController {
   private readonly logger = new Logger(ClassroomController.name);
   constructor(private readonly classroomService: ClassroomService) {}
@@ -48,9 +47,7 @@ export class ClassroomController {
     @Param('id', new ParseIntPipe()) id: number,
   ): Promise<Classroom> {
     this.logger.log(`Get /${id}`);
-    return (await this.classroomService.getOneById(id)).orElseThrow(
-      () => new NotFoundException(),
-    );
+    return await this.classroomService.getOneById(id);
   }
 
   @Post()

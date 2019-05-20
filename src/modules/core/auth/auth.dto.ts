@@ -1,8 +1,10 @@
 import { IsEmail, MinLength } from 'class-validator';
 import { ApiModelProperty } from '@nestjs/swagger';
+import { User } from 'src/modules/users/users.entity';
 
 export class TokenDto {
   token: string;
+  me: User;
 }
 
 // tslint:disable-next-line:max-classes-per-file
