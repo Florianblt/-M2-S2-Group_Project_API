@@ -3,6 +3,7 @@ import {
   Inject,
   forwardRef,
   NotFoundException,
+  BadRequestException,
 } from '@nestjs/common';
 import { RaspberryRepository } from './raspberry.repository';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -34,6 +35,12 @@ export class RaspberryService {
   }
 
   async create(newRapsberryDto: NewRaspberryDto): Promise<Raspberry> {
+    const raspberyFound = await this.raspberryRepository.findOneByUID(
+      newRapsberryDto.uid,
+    );
+    if (raspberyFound) {
+      return raspberyFound.get();
+    }
     const classroom = await this.classroomService.getOneById(
       newRapsberryDto.idClassroom,
     );
@@ -56,6 +63,9 @@ export class RaspberryService {
     raspberryFound.classroom = await this.classroomService.getOneById(
       newRapsberryDto.idClassroom,
     );
+    if (raspberryFound.classroom.raspberry) {
+      throw new BadRequestException('This classroom already have a Raspberry');
+    }
     raspberryFound = await this.raspberryRepository.save(raspberryFound);
     return raspberryFound;
   }

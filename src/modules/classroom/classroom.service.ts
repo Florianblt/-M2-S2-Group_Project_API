@@ -2,7 +2,6 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ClassroomRepository } from './classroom.repository';
 import { Classroom } from './classroom.entity';
-import { Optional } from 'typescript-optional';
 import { NewClassroomDto } from './classroom.dto';
 
 @Injectable()

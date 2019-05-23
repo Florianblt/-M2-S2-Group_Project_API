@@ -1,11 +1,11 @@
-import { Entity, Column, OneToOne, JoinColumn } from 'typeorm';
+import { Entity, Column, OneToOne, JoinColumn, Unique } from 'typeorm';
 import { DbAuditModel } from '../../utils/dbmodel.model';
 import { ApiModelProperty } from '@nestjs/swagger';
 import { Classroom } from '../classroom/classroom.entity';
 
 @Entity()
 export class Raspberry extends DbAuditModel {
-  @Column()
+  @Column({ length: 20, unique: true })
   @ApiModelProperty({ required: true })
   uid: string;
 
@@ -14,7 +14,7 @@ export class Raspberry extends DbAuditModel {
   alive: boolean;
 
   @ApiModelProperty({ required: true })
-  @OneToOne(type => Classroom)
+  @OneToOne(type => Classroom, { onDelete: 'CASCADE' })
   @JoinColumn()
   classroom: Classroom;
 }

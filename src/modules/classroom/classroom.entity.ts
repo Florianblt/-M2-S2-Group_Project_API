@@ -18,7 +18,7 @@ export class Classroom extends DbAuditModel {
   adresse: string;
 
   @ApiModelProperty({ required: true })
-  @OneToOne(type => Raspberry)
+  @OneToOne(type => Raspberry, { onDelete: 'CASCADE' })
   @JoinColumn()
   raspberry: Raspberry;
 }
