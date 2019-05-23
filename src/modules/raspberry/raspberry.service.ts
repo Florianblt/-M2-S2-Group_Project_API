@@ -22,7 +22,9 @@ export class RaspberryService {
   ) {}
 
   async getAll(): Promise<Raspberry[]> {
-    return this.raspberryRepository.find({});
+    return this.raspberryRepository.find({
+      relations: ['classroom'],
+    });
   }
 
   async getOneById(id: number): Promise<Raspberry> {
