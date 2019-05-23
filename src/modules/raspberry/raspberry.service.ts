@@ -35,12 +35,6 @@ export class RaspberryService {
   }
 
   async create(newRapsberryDto: NewRaspberryDto): Promise<Raspberry> {
-    const raspberyFound = await this.raspberryRepository.findOneByUID(
-      newRapsberryDto.uid,
-    );
-    if (raspberyFound) {
-      return raspberyFound.get();
-    }
     const classroom = await this.classroomService.getOneById(
       newRapsberryDto.idClassroom,
     );
