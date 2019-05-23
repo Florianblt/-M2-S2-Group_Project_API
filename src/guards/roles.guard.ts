@@ -3,8 +3,12 @@ import {
   CanActivate,
   ExecutionContext,
   Logger,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
+import { ROLES } from '../modules/users/roles.constants';
+import { User } from '../modules/users/users.entity';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
@@ -14,17 +18,19 @@ export class RolesGuard implements CanActivate {
 
   canActivate(context: ExecutionContext): boolean {
     const roles = this.reflector.get<string[]>('roles', context.getHandler());
-
     if (!roles) {
       return true;
     }
 
     const request = context.switchToHttp().getRequest();
-    const user = request.user;
-    this.logger.log(`User : ${user.email}`);
-    const hasRole = () =>
-      user.roles.some((role: string) => roles.includes(role));
-
-    return user && user.roles && hasRole();
+    const user: User = request.user;
+    const hasRole = () => roles.indexOf(user.role) >= 0;
+    if (user && user.role && hasRole()) {
+      return true;
+    }
+    throw new HttpException(
+      'You do not have permission (Roles)',
+      HttpStatus.UNAUTHORIZED,
+    );
   }
 }

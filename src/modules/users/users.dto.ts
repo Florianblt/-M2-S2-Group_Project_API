@@ -5,13 +5,20 @@ import { ROLES } from './roles.constants';
 export class UserDtoRegister {
   @ApiModelProperty({
     required: true,
-    example: [ROLES.DEFAULT_USER, ROLES.ADMIN_USER],
+    example: ROLES.DEFAULT_USER,
   })
-  @IsArray()
-  @IsIn([ROLES.DEFAULT_USER, ROLES.ADMIN_USER], {
-    each: true,
-  })
-  roles: string[];
+  @IsIn(
+    [
+      ROLES.DEFAULT_USER,
+      ROLES.ADMIN_USER,
+      ROLES.TEACHER_USER,
+      ROLES.STUDENT_USER,
+    ],
+    {
+      each: true,
+    },
+  )
+  role: ROLES;
 
   @IsEmail()
   @ApiModelProperty({ example: 'foo@bar.fr' })
@@ -29,6 +36,31 @@ export class UserDtoRegister {
   @MinLength(6)
   @ApiModelProperty({ example: 'azerty', minLength: 6 })
   password: string;
+}
+
+// tslint:disable-next-line:max-classes-per-file
+export class UserDtoSetRoles {
+  @ApiModelProperty({
+    required: true,
+    example: [
+      ROLES.DEFAULT_USER,
+      ROLES.ADMIN_USER,
+      ROLES.TEACHER_USER,
+      ROLES.STUDENT_USER,
+    ],
+  })
+  @IsIn(
+    [
+      ROLES.DEFAULT_USER,
+      ROLES.ADMIN_USER,
+      ROLES.TEACHER_USER,
+      ROLES.STUDENT_USER,
+    ],
+    {
+      each: true,
+    },
+  )
+  role: ROLES;
 }
 
 // tslint:disable-next-line:max-classes-per-file

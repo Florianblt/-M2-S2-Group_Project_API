@@ -3,6 +3,8 @@ config();
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
+import { ClassSerializerInterceptor } from '@nestjs/common';
+import { RolesGuard } from './guards/roles.guard';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -21,6 +23,10 @@ async function bootstrap() {
 
   // Global prefix
   app.setGlobalPrefix('v1/api');
+
+  // Global interceptor
+  const classSerializer = app.select(AppModule).get(ClassSerializerInterceptor);
+  app.useGlobalInterceptors(classSerializer);
 
   // Enable CORS
   app.enableCors();

@@ -16,6 +16,9 @@ import { UserService } from '../../users/users.service';
 import { UserDtoRegister } from '../../users/users.dto';
 import { CurrentUser } from '../../../decorators/currentUser.decorator';
 import { AuthGuard } from '@nestjs/passport';
+import { RolesGuard } from 'src/guards/roles.guard';
+import { ROLES } from '../../users/roles.constants';
+import { Roles } from 'src/decorators/roles.decorator';
 
 @ApiUseTags('Auth')
 @Controller('auth')
@@ -28,7 +31,6 @@ export class AuthController {
   ) {}
 
   @Post('login')
-  @UseInterceptors(ClassSerializerInterceptor)
   async signIn(@Body() userLogin: LoginDto): Promise<TokenDto> {
     this.logger.log(`Post /login`);
     const token = await this.authService.signIn(
@@ -39,18 +41,43 @@ export class AuthController {
   }
 
   @Post('register')
-  @UseInterceptors(ClassSerializerInterceptor)
   async registerUser(@Body() userRegister: UserDtoRegister): Promise<User> {
     this.logger.log(`Post /register`);
     return this.userService.saveNew(userRegister);
   }
 
   @Get('me')
-  @UseInterceptors(ClassSerializerInterceptor)
   @ApiBearerAuth()
-  @UseGuards(AuthGuard())
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   async getMe(@CurrentUser() loggedUser: User) {
     this.logger.log(`Get /me`);
+    return loggedUser;
+  }
+
+  @Get('admin')
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles(ROLES.ADMIN_USER)
+  async getMeAdmin(@CurrentUser() loggedUser: User) {
+    this.logger.log(`Get /me admin`);
+    return loggedUser;
+  }
+
+  @Get('teacher')
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles(ROLES.TEACHER_USER)
+  async getMeTeacher(@CurrentUser() loggedUser: User) {
+    this.logger.log(`Get /me teacher`);
+    return loggedUser;
+  }
+
+  @Get('student')
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles(ROLES.STUDENT_USER)
+  async getMeStudent(@CurrentUser() loggedUser: User) {
+    this.logger.log(`Get /me student`);
     return loggedUser;
   }
 }

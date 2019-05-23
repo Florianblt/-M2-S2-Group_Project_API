@@ -22,6 +22,7 @@ import {
   UserDtoUpdatePassword,
 } from './users.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { UserDtoSetRoles } from './users.dto';
 
 @ApiUseTags('User')
 @Controller('user')
@@ -84,6 +85,20 @@ export class UserController {
   ): Promise<User> {
     this.logger.log(`Put /${id}`);
     return this.userService.update(id, userDto);
+  }
+
+  @Put(':id/roles')
+  @ApiResponse({
+    status: 200,
+    description: 'The updated User with the matching id',
+    type: User,
+  })
+  @ApiResponse({ status: 404, description: 'Not found.' })
+  async setRoles(
+    @Param('id', new ParseIntPipe()) id: number,
+    @Body() userDtoSetRoles: UserDtoSetRoles,
+  ) {
+    this.logger.log(`Put /${id}/password`);
   }
 
   @Put(':id/password')

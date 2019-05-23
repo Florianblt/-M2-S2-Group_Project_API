@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, ClassSerializerInterceptor } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -7,6 +7,7 @@ import { UsersModule } from './modules/users/users.module';
 import { ConfigModule } from './modules/core/config/config.module';
 import { ClassroomModule } from './modules/classroom/classroom.module';
 import { RaspberryModule } from './modules/raspberry/raspberry.module';
+import { RolesGuard } from './guards/roles.guard';
 
 @Module({
   imports: [
@@ -28,6 +29,6 @@ import { RaspberryModule } from './modules/raspberry/raspberry.module';
     RaspberryModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, ClassSerializerInterceptor, RolesGuard],
 })
 export class AppModule {}

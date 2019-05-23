@@ -2,6 +2,8 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UserService } from '../../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { TokenDto } from './auth.dto';
+import { Optional } from 'typescript-optional';
+import { User } from 'src/modules/users/users.entity';
 
 export interface JwtPayload {
   idUser: number;
@@ -28,7 +30,7 @@ export class AuthService {
     return tokenDto;
   }
 
-  async validateUser(payload: JwtPayload): Promise<any> {
+  async validateUser(payload: JwtPayload): Promise<Optional<User>> {
     return await this.usersService.getOneById(payload.idUser);
   }
 }

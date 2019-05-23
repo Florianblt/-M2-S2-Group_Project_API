@@ -17,15 +17,14 @@ import {
 import { Optional } from 'typescript-optional';
 import { compare, genSalt, hash } from 'bcryptjs';
 import { ROLES } from './roles.constants';
-import { Role } from './roles.entity';
 import { Repository } from 'typeorm';
+import { UserDtoSetRoles } from './users.dto';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(UserRepository)
     private readonly userRepository: UserRepository,
-    @InjectRepository(Role) private readonly roleRepository: Repository<Role>,
   ) {}
 
   async getAll(): Promise<User[]> {
@@ -60,21 +59,11 @@ export class UserService {
     userNew.email = userRegister.email.toLowerCase();
     userNew.lastName = userRegister.lastName;
     userNew.firstName = userRegister.firstName;
-    let roles = [];
-    roles = await Promise.all(
-      [ROLES.DEFAULT_USER, ROLES.ADMIN_USER].map(key =>
-        this.findRoleWithKey(key),
-      ),
-    );
-    userNew.roles = roles;
+    userNew.role = userRegister.role;
 
     userNew = await this.userRepository.save(userNew);
 
     return userNew;
-  }
-
-  async findRoleWithKey(key: string): Promise<Role> {
-    return await this.roleRepository.findOne({ where: { key } });
   }
 
   async update(id: number, body: UserDtoUpdateInfo): Promise<User> {
@@ -87,6 +76,15 @@ export class UserService {
 
     userFound = await this.userRepository.save(userFound);
 
+    return userFound;
+  }
+
+  async setRoles(id: number, body: UserDtoSetRoles): Promise<User> {
+    let userFound = (await this.userRepository.findOneById(id)).orElseThrow(
+      () => new NotFoundException(),
+    );
+    userFound.role = body.role;
+    userFound = await this.userRepository.save(userFound);
     return userFound;
   }
 

@@ -2,7 +2,7 @@ import { DbAuditModel } from '../../utils/dbmodel.model';
 import { Column, Entity, ManyToMany, JoinTable } from 'typeorm';
 import { ApiModelProperty } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
-import { Role } from './roles.entity';
+import { ROLES } from './roles.constants';
 
 @Entity()
 export class User extends DbAuditModel {
@@ -22,7 +22,11 @@ export class User extends DbAuditModel {
   @Exclude()
   password: string;
 
-  @ManyToMany(type => Role, role => role.user, { nullable: true })
-  @JoinTable()
-  roles: Role[];
+  @Column({
+    type: 'enum',
+    enum: ROLES,
+    default: ROLES.DEFAULT_USER,
+    nullable: true,
+  })
+  role?: ROLES;
 }
