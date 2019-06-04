@@ -4,6 +4,7 @@ import { ApiModelProperty } from '@nestjs/swagger';
 import { User } from '../users/users.entity';
 import { Classroom } from '../classroom/classroom.entity';
 import { Promo } from '../promo/promo.entity';
+import { CourseStudent } from '../course-student/course-student.entity';
 
 @Entity()
 export class Course extends DbAuditModel {
@@ -38,4 +39,8 @@ export class Course extends DbAuditModel {
   @Column()
   @ApiModelProperty()
   clockInEnding: Date;
+
+  @ApiModelProperty()
+  @OneToMany(type => CourseStudent, courseStudent => courseStudent.course)
+  courseStudents: CourseStudent[];
 }

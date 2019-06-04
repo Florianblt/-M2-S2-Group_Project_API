@@ -11,6 +11,7 @@ import { ApiUseTags, ApiResponse } from '@nestjs/swagger';
 import { CourseService } from './course.service';
 import { Course } from './course.entity';
 import { NewCourseDto } from './course.dto';
+import { start } from 'repl';
 
 @Controller('course')
 @ApiUseTags('Course')
@@ -52,5 +53,16 @@ export class CourseController {
   saveNew(@Body() newCourseDto: NewCourseDto): Promise<Course> {
     this.logger.log('Post /');
     return this.courseService.create(newCourseDto);
+  }
+
+  @Post(':id/start')
+  @ApiResponse({
+    status: 200,
+    description: `The course ClockIn has been started`,
+    type: Course,
+  })
+  async start(@Param('id', new ParseIntPipe()) id: number): Promise<Course> {
+    this.logger.log(`Post /${id}/start`);
+    return this.courseService.startCourse(id);
   }
 }

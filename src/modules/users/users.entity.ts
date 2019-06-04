@@ -12,6 +12,7 @@ import { Exclude } from 'class-transformer';
 import { ROLES } from './roles.constants';
 import { Promo } from '../promo/promo.entity';
 import { Course } from '../course/course.entity';
+import { CourseStudent } from '../course-student/course-student.entity';
 
 @Entity()
 export class User extends DbAuditModel {
@@ -46,4 +47,8 @@ export class User extends DbAuditModel {
   @OneToMany(type => Course, course => course.teacher)
   @Exclude()
   courses: Course[];
+
+  @ApiModelProperty()
+  @OneToMany(type => CourseStudent, courseStudent => courseStudent.course)
+  courseStudents: CourseStudent[];
 }

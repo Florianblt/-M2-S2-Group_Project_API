@@ -12,6 +12,7 @@ import { NewCourseDto } from './course.dto';
 import { PromoService } from '../promo/promo.service';
 import { ClassroomService } from '../classroom/classroom.service';
 import { UserService } from '../users/users.service';
+import { CourseStudentService } from '../course-student/course-student.service';
 
 @Injectable()
 export class CourseService {
@@ -26,6 +27,8 @@ export class CourseService {
     private readonly promoService: PromoService,
     @Inject(forwardRef(() => ClassroomService))
     private readonly classroomService: ClassroomService,
+    @Inject(forwardRef(() => CourseStudentService))
+    private readonly courseStudentService: CourseStudentService,
   ) {}
 
   async getAll(): Promise<Course[]> {
@@ -64,5 +67,19 @@ export class CourseService {
     course.clockInEnding = newCourseDto.hourEnding;
     course = await this.courseRepository.save(course);
     return course;
+  }
+
+  async startCourse(idCourse: number): Promise<Course> {
+    let courseFound = (await this.courseRepository.findOneById(
+      idCourse,
+    )).orElseThrow(() => new NotFoundException());
+    courseFound.clockInBeginning = new Date();
+
+    const promoFound = await this.promoService.getOneById(courseFound.promo.id);
+    promoFound.students.forEach(async student => {
+      await this.courseStudentService.create(courseFound.id, student.id);
+    });
+    courseFound = await this.courseRepository.save(courseFound);
+    return courseFound;
   }
 }
