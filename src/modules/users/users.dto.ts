@@ -70,6 +70,9 @@ export class UserDtoUpdateInfo {
 
   @IsString()
   lastName: string;
+
+  @IsString()
+  key: string;
 }
 
 // tslint:disable-next-line:max-classes-per-file

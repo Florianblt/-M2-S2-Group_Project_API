@@ -77,6 +77,7 @@ export class UserService {
 
     userFound.firstName = body.firstName;
     userFound.lastName = body.lastName;
+    userFound.key = body.key;
 
     userFound = await this.userRepository.save(userFound);
 
