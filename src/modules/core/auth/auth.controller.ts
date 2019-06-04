@@ -9,7 +9,6 @@ import {
   UseInterceptors,
   ClassSerializerInterceptor,
   Param,
-  ParseIntPipe,
   NotFoundException,
 } from '@nestjs/common';
 import { LoginDto, TokenDto } from './auth.dto';
@@ -57,9 +56,7 @@ export class AuthController {
     type: User,
   })
   @ApiResponse({ status: 404, description: 'Not found.' })
-  async findOneByUID(
-    @Param('key', new ParseIntPipe()) key: string,
-  ): Promise<User> {
+  async findOneByUID(@Param('key') key: string): Promise<User> {
     this.logger.log(`Get /${key}`);
     return (await this.userService.getOneWithKey(key)).orElseThrow(
       () => new NotFoundException(),
