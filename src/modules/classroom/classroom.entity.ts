@@ -1,7 +1,8 @@
-import { Entity, Column, OneToOne, JoinColumn } from 'typeorm';
+import { Entity, Column, OneToOne, JoinColumn, OneToMany } from 'typeorm';
 import { DbAuditModel } from 'src/utils/dbmodel.model';
 import { ApiModelProperty } from '@nestjs/swagger';
 import { Raspberry } from '../raspberry/raspberry.entity';
+import { Course } from '../course/course.entity';
 
 @Entity()
 export class Classroom extends DbAuditModel {
@@ -21,4 +22,8 @@ export class Classroom extends DbAuditModel {
   @OneToOne(type => Raspberry, { onDelete: 'CASCADE' })
   @JoinColumn()
   raspberry: Raspberry;
+
+  @ApiModelProperty()
+  @OneToMany(type => Course, course => course.classroom)
+  courses: Course[];
 }

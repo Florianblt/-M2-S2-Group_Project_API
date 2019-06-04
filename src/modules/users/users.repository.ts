@@ -17,4 +17,8 @@ export class UserRepository extends Repository<User> {
       await this.findOne({ email: email.toLowerCase() }),
     );
   }
+
+  async findOneWithKey(key: string): Promise<Optional<User>> {
+    return Optional.ofNullable(await this.findOne({ key }));
+  }
 }

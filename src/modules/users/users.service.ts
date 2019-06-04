@@ -39,6 +39,10 @@ export class UserService {
     return await this.userRepository.findOneWithEmail(email);
   }
 
+  async getOneWithKey(key: string): Promise<Optional<User>> {
+    return await this.userRepository.findOneWithKey(key);
+  }
+
   async doPasswordMatch(user: User, password: string): Promise<boolean> {
     return await compare(password, user.password);
   }

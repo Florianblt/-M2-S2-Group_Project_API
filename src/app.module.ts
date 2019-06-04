@@ -9,6 +9,7 @@ import { ClassroomModule } from './modules/classroom/classroom.module';
 import { RaspberryModule } from './modules/raspberry/raspberry.module';
 import { RolesGuard } from './guards/roles.guard';
 import { PromoModule } from './modules/promo/promo.module';
+import { CourseModule } from './modules/course/course.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { PromoModule } from './modules/promo/promo.module';
     ClassroomModule,
     RaspberryModule,
     PromoModule,
+    CourseModule,
   ],
   controllers: [AppController],
   providers: [AppService, ClassSerializerInterceptor, RolesGuard],

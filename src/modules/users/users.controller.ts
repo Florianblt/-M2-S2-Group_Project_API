@@ -72,6 +72,23 @@ export class UserController {
     );
   }
 
+  @Get('/find/:key')
+  @UseInterceptors(ClassSerializerInterceptor)
+  @ApiResponse({
+    status: 200,
+    description: 'The User with the matching key',
+    type: User,
+  })
+  @ApiResponse({ status: 404, description: 'Not found.' })
+  async findOneByUID(
+    @Param('key', new ParseIntPipe()) key: string,
+  ): Promise<User> {
+    this.logger.log(`Get /${key}`);
+    return (await this.userService.getOneWithKey(key)).orElseThrow(
+      () => new NotFoundException(),
+    );
+  }
+
   @Put(':id')
   @ApiResponse({
     status: 200,

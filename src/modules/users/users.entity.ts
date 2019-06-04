@@ -13,6 +13,10 @@ export class User extends DbAuditModel {
 
   @Column()
   @ApiModelProperty()
+  key: string;
+
+  @Column()
+  @ApiModelProperty()
   firstName: string;
 
   @Column()
