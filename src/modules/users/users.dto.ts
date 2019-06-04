@@ -33,6 +33,10 @@ export class UserDtoRegister {
   lastName: string;
 
   @IsString()
+  @ApiModelProperty({ example: '123azeRTY' })
+  key: string;
+
+  @IsString()
   @MinLength(6)
   @ApiModelProperty({ example: 'azerty', minLength: 6 })
   password: string;

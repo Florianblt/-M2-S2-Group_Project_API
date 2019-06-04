@@ -63,6 +63,7 @@ export class UserService {
     userNew.email = userRegister.email.toLowerCase();
     userNew.lastName = userRegister.lastName;
     userNew.firstName = userRegister.firstName;
+    userNew.key = userRegister.key;
     userNew.role = userRegister.role;
 
     userNew = await this.userRepository.save(userNew);
