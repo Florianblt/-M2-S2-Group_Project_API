@@ -1,9 +1,18 @@
 import { DbAuditModel } from '../../utils/dbmodel.model';
-import { Column, Entity, ManyToMany, JoinTable, ManyToOne } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToMany,
+  JoinTable,
+  ManyToOne,
+  OneToMany,
+} from 'typeorm';
 import { ApiModelProperty } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
 import { ROLES } from './roles.constants';
 import { Promo } from '../promo/promo.entity';
+import { Course } from '../course/course.entity';
+import { CourseStudent } from '../course-student/course-student.entity';
 
 @Entity()
 export class User extends DbAuditModel {
@@ -36,5 +45,14 @@ export class User extends DbAuditModel {
   role?: ROLES;
 
   @ManyToOne(type => Promo, promo => promo.students)
+  @Exclude()
   promo: Promo;
+
+  @OneToMany(type => Course, course => course.teacher)
+  @Exclude()
+  courses: Course[];
+
+  @ApiModelProperty()
+  @OneToMany(type => CourseStudent, courseStudent => courseStudent.course)
+  courseStudents: CourseStudent[];
 }

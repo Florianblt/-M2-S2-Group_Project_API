@@ -3,6 +3,7 @@ import { DbAuditModel } from 'src/utils/dbmodel.model';
 import { ApiModelProperty } from '@nestjs/swagger';
 import { Raspberry } from '../raspberry/raspberry.entity';
 import { Course } from '../course/course.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class Classroom extends DbAuditModel {
@@ -24,6 +25,7 @@ export class Classroom extends DbAuditModel {
   raspberry: Raspberry;
 
   @ApiModelProperty()
+  @Exclude()
   @OneToMany(type => Course, course => course.classroom)
   courses: Course[];
 }
