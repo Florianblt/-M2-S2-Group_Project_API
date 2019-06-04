@@ -8,6 +8,7 @@ import { ConfigModule } from './modules/core/config/config.module';
 import { ClassroomModule } from './modules/classroom/classroom.module';
 import { RaspberryModule } from './modules/raspberry/raspberry.module';
 import { RolesGuard } from './guards/roles.guard';
+import { PromoModule } from './modules/promo/promo.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { RolesGuard } from './guards/roles.guard';
     ConfigModule,
     ClassroomModule,
     RaspberryModule,
+    PromoModule,
   ],
   controllers: [AppController],
   providers: [AppService, ClassSerializerInterceptor, RolesGuard],

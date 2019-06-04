@@ -79,6 +79,10 @@ export class UserService {
     return userFound;
   }
 
+  async save(user: User): Promise<User> {
+    return await this.userRepository.save(user);
+  }
+
   async setRoles(id: number, body: UserDtoSetRoles): Promise<User> {
     let userFound = (await this.userRepository.findOneById(id)).orElseThrow(
       () => new NotFoundException(),
