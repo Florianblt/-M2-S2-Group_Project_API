@@ -1,4 +1,4 @@
-import { ApiUseTags, ApiBearerAuth } from '@nestjs/swagger';
+import { ApiUseTags, ApiBearerAuth, ApiResponse } from '@nestjs/swagger';
 import {
   Body,
   Controller,
@@ -8,6 +8,9 @@ import {
   Logger,
   UseInterceptors,
   ClassSerializerInterceptor,
+  Param,
+  ParseIntPipe,
+  NotFoundException,
 } from '@nestjs/common';
 import { LoginDto, TokenDto } from './auth.dto';
 import { AuthService } from './auth.service';
@@ -44,6 +47,23 @@ export class AuthController {
   async registerUser(@Body() userRegister: UserDtoRegister): Promise<User> {
     this.logger.log(`Post /register`);
     return this.userService.saveNew(userRegister);
+  }
+
+  @Get('/find/:key')
+  @UseInterceptors(ClassSerializerInterceptor)
+  @ApiResponse({
+    status: 200,
+    description: 'The User with the matching key',
+    type: User,
+  })
+  @ApiResponse({ status: 404, description: 'Not found.' })
+  async findOneByUID(
+    @Param('key', new ParseIntPipe()) key: string,
+  ): Promise<User> {
+    this.logger.log(`Get /${key}`);
+    return (await this.userService.getOneWithKey(key)).orElseThrow(
+      () => new NotFoundException(),
+    );
   }
 
   @Get('me')
