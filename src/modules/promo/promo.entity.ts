@@ -2,6 +2,7 @@ import { Entity, Column, OneToMany } from 'typeorm';
 import { DbAuditModel } from '../../utils/dbmodel.model';
 import { ApiModelProperty } from '@nestjs/swagger';
 import { User } from '../users/users.entity';
+import { Course } from '../course/course.entity';
 
 @Entity()
 export class Promo extends DbAuditModel {
@@ -11,4 +12,7 @@ export class Promo extends DbAuditModel {
 
   @OneToMany(type => User, user => user.promo)
   students: User[];
+
+  @OneToMany(type => Course, course => course.promo)
+  courses: Course[];
 }
