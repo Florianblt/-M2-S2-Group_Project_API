@@ -19,10 +19,10 @@ export class NewCourseDto {
   idPromo: number;
 
   @IsDate()
-  @ApiModelProperty({ required: true })
+  @ApiModelProperty({ required: true, example: '2019-06-14T13:00:00.238Z' })
   hourBeginning: Date;
 
   @IsDate()
-  @ApiModelProperty({ required: true })
+  @ApiModelProperty({ required: true, example: '2019-06-14T16:00:00.238Z' })
   hourEnding: Date;
 }
