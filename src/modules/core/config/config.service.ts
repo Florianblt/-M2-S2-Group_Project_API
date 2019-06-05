@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import * as Joi from '@hapi/joi';
 import { config as parseConfig } from 'dotenv';
 
@@ -11,7 +11,11 @@ export class ConfigService {
   private readonly envConfig: EnvConfig;
 
   constructor() {
-    parseConfig();
+    try {
+      parseConfig();
+      // tslint:disable-next-line:no-empty
+    } catch (e) {}
+
     this.envConfig = this.validateInput(process.env);
   }
 
