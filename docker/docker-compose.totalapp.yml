@@ -14,7 +14,7 @@ services:
       LOG_LEVEL: debug
       LOG_SQL_REQUEST: 'false'
       ## DB
-      DATABASE_URL: postgres://typeormtest:password@localhost:5432/typeormtest
+      DATABASE_URL: postgres://typeormtest:password@db:5432/typeormtest
       ## AUTHENTICATION [JWT]
       JWT_SECRET: mysecretkey
     depends_on:
