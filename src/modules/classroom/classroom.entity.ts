@@ -1,5 +1,5 @@
 import { Entity, Column, OneToOne, JoinColumn, OneToMany } from 'typeorm';
-import { DbAuditModel } from 'src/utils/dbmodel.model';
+import { DbAuditModel } from '../../utils/dbmodel.model';
 import { ApiModelProperty } from '@nestjs/swagger';
 import { Raspberry } from '../raspberry/raspberry.entity';
 import { Course } from '../course/course.entity';

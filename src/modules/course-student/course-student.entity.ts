@@ -1,5 +1,5 @@
 import { Entity, Column, ManyToOne } from 'typeorm';
-import { DbAuditModel } from 'src/utils/dbmodel.model';
+import { DbAuditModel } from '../../utils/dbmodel.model';
 import { ApiModelProperty } from '@nestjs/swagger';
 import { Course } from '../course/course.entity';
 import { User } from '../users/users.entity';

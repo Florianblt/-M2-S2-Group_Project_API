@@ -18,9 +18,9 @@ import { UserService } from '../../users/users.service';
 import { UserDtoRegister } from '../../users/users.dto';
 import { CurrentUser } from '../../../decorators/currentUser.decorator';
 import { AuthGuard } from '@nestjs/passport';
-import { RolesGuard } from 'src/guards/roles.guard';
+import { RolesGuard } from '../../../guards/roles.guard';
 import { ROLES } from '../../users/roles.constants';
-import { Roles } from 'src/decorators/roles.decorator';
+import { Roles } from '../../../decorators/roles.decorator';
 
 @ApiUseTags('Auth')
 @Controller('auth')
