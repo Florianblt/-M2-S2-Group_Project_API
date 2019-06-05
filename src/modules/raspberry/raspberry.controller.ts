@@ -18,8 +18,6 @@ import { AuthGuard } from '@nestjs/passport';
 
 @ApiUseTags(`Raspberry`)
 @Controller('raspberry')
-@ApiBearerAuth()
-@UseGuards(AuthGuard())
 export class RaspberryController {
   private readonly logger = new Logger(RaspberryController.name);
 
@@ -32,6 +30,8 @@ export class RaspberryController {
     type: Raspberry,
     isArray: true,
   })
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard())
   getAll(): Promise<Raspberry[]> {
     this.logger.log(`Get /`);
     return this.raspberryService.getAll();
@@ -44,11 +44,24 @@ export class RaspberryController {
     type: Raspberry,
   })
   @ApiResponse({ status: 404, description: `Not found.` })
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard())
   async findOne(
     @Param('id', new ParseIntPipe()) id: number,
   ): Promise<Raspberry> {
     this.logger.log(`Get /${id}`);
     return await this.raspberryService.getOneById(id);
+  }
+
+  @Get('/me/:uid')
+  @ApiResponse({
+    status: 200,
+    description: `The raspberry with the matching uid`,
+    type: Raspberry,
+  })
+  @ApiResponse({ status: 404, description: `Not found.` })
+  async findMe(@Param('uid') uid: string): Promise<Raspberry> {
+    return await this.raspberryService.getOneByUID(uid);
   }
 
   @Post()
@@ -57,6 +70,8 @@ export class RaspberryController {
     description: `The raspberry has been created.`,
     type: Raspberry,
   })
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard())
   saveNew(@Body() newRaspberryDto: NewRaspberryDto): Promise<Raspberry> {
     this.logger.log(`Post /`);
     return this.raspberryService.create(newRaspberryDto);
@@ -69,6 +84,8 @@ export class RaspberryController {
     type: Raspberry,
   })
   @ApiResponse({ status: 404, description: 'Not found.' })
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard())
   async updateRaspberry(
     @Param('id', new ParseIntPipe()) id: number,
     @Body() newRaspberryDto: NewRaspberryDto,
@@ -83,6 +100,8 @@ export class RaspberryController {
     description: 'The raspberry with the matching id was deleted',
   })
   @ApiResponse({ status: 404, description: 'Not found.' })
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard())
   async deleteOne(@Param('id', new ParseIntPipe()) id: number): Promise<void> {
     this.logger.log(`Delete /${id}`);
     await this.raspberryService.deleteById(id);

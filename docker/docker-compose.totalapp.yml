@@ -2,7 +2,7 @@ version: '3.5'
 
 services:
   group-poject-api:
-    image: 'florianblt/auto-check-pres-api:latest'
+    image: florianblt/auto-pres-check-api:latest
     ports:
       - 3030:3000
     environment:
@@ -15,6 +15,11 @@ services:
       LOG_SQL_REQUEST: 'false'
       ## DB
       DATABASE_URL: postgres://typeormtest:password@db:5432/typeormtest
+      DATABASE_HOST: db
+      DATABASE_PORT: 5432
+      DATABASE_USER: typeormtest
+      DATABASE_PASSWORD: password
+      DATABASE_NAME: typeormtest
       ## AUTHENTICATION [JWT]
       JWT_SECRET: mysecretkey
     depends_on:
