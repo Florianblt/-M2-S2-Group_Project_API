@@ -34,10 +34,8 @@ export class ConfigService {
       LOG_LEVEL: Joi.string()
         .valid(['error', 'warning', 'info', 'debug', 'silly'])
         .default('debug'),
-      DATABASE_URL: Joi.string().default(
-        'postgres://typeormtest:password@localhost:5432/typeormtest',
-      ),
-      JWT_SECRET: Joi.string().default('mysecretkey'),
+      DATABASE_URL: Joi.string().required(),
+      JWT_SECRET: Joi.string().required(),
       LOG_SQL_REQUEST: Joi.boolean().default(false),
     });
 

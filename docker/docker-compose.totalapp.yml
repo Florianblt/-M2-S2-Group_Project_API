@@ -5,6 +5,18 @@ services:
     image: 'florianblt/auto-check-pres-api:latest'
     ports:
       - 3030:3000
+    environment:
+      ## API
+      API_PORT: 3000
+      API_HOST: localhost
+      API_PROTOCOL: http
+      ## LOGGER
+      LOG_LEVEL: debug
+      LOG_SQL_REQUEST: 'false'
+      ## DB
+      DATABASE_URL: postgres://typeormtest:password@localhost:5432/typeormtest
+      ## AUTHENTICATION [JWT]
+      JWT_SECRET: mysecretkey
     depends_on:
       - db
     networks:
