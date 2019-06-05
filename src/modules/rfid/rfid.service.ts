@@ -12,6 +12,7 @@ import { RaspberryService } from '../raspberry/raspberry.service';
 import { ClassroomService } from '../classroom/classroom.service';
 import { RfidDto } from './rfid.dto';
 import { ROLES } from '../users/roles.constants';
+import { CourseStudentService } from '../course-student/course-student.service';
 
 @Injectable()
 export class RfidService {
@@ -26,26 +27,23 @@ export class RfidService {
     private readonly raspberryService: RaspberryService,
     @Inject(forwardRef(() => ClassroomService))
     private readonly classroomService: ClassroomService,
+    @Inject(forwardRef(() => CourseStudentService))
+    private readonly courseStudentService: CourseStudentService,
   ) {}
 
   async submitRfid(rfidDto: RfidDto) {
-    this.logger.log(`On y est`);
     const raspberryFound = await this.raspberryService.getOneByUID(
       rfidDto.raspberryUID,
     );
-    this.logger.log(`Raspberry found`);
 
     const userFound = (await this.userService.getOneWithKey(
       rfidDto.userKey,
     )).orElseThrow(() => new NotFoundException(`User not found`));
-    this.logger.log(`User found`);
 
     const classRoomFound = await this.classroomService.getOneById(
       raspberryFound.classroom.id,
     );
-    this.logger.log(classRoomFound);
 
-    this.logger.log(`/getActualCourseByClassroom/${classRoomFound.id}`);
     const courseFound = await this.courseService.getActualCourseByClassroom(
       classRoomFound.id,
     );
@@ -53,9 +51,7 @@ export class RfidService {
     switch (userFound.role) {
       case ROLES.TEACHER_USER:
         if (courseFound.teacher.id === userFound.id) {
-          this.logger.log(`C'est le bon enseignant`);
           if (courseFound.clockInBeginning === courseFound.hourEnding) {
-            this.logger.log(`Starting course`);
             await this.courseService.startCourse(courseFound.id);
           }
         } else {
@@ -66,7 +62,18 @@ export class RfidService {
         break;
 
       case ROLES.STUDENT_USER:
-        this.logger.log(`Etudiant`);
+        const courseStudentFound = await this.courseStudentService.getOneByStudent(
+          courseFound.id,
+          userFound.id,
+        );
+        if (courseStudentFound.clockInHour === null) {
+          return this.courseStudentService.clockIn(
+            courseStudentFound,
+            new Date(),
+          );
+        } else {
+          throw new BadRequestException(`Already clocked In`);
+        }
         break;
 
       default:

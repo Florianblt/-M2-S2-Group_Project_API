@@ -1,6 +1,7 @@
 import { EntityRepository, Repository } from 'typeorm';
 import { Optional } from 'typescript-optional';
 import { CourseStudent } from './course-student.entity';
+import { IsDate } from 'class-validator';
 
 @EntityRepository(CourseStudent)
 export class CourseStudentRepository extends Repository<CourseStudent> {
@@ -12,11 +13,25 @@ export class CourseStudentRepository extends Repository<CourseStudent> {
     );
   }
 
-  // async findCourseForStudent(idStudent: number, idCourse: number): Promise<Optional<CourseStudent>> {
-  //   return Optional.ofNullable(
-  //     await this.findOne({})
-  //   )
-  // }
+  async findCourseForStudent(
+    idStudent: number,
+    idCourse: number,
+  ): Promise<Optional<CourseStudent>> {
+    return Optional.ofNullable(
+      await this.createQueryBuilder('courseStudent')
+        .andWhere('courseStudent.student = :idStudent', {
+          idStudent,
+        })
+        .andWhere('courseStudent.course = :idCourse', { idCourse })
+        .getOne(),
+    );
+  }
+
+  async findAllForCourse(idCourse: number): Promise<CourseStudent[]> {
+    return await this.createQueryBuilder('courseStudent')
+      .where('courseStudent.course = :idCourse', { idCourse })
+      .getMany();
+  }
 
   async findAllAbsencesByUser(
     idUser: number,

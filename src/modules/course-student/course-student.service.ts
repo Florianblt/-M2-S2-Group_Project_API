@@ -51,4 +51,26 @@ export class CourseStudentService {
     courseStudent.clockInHour = null;
     courseStudent = await this.courseStudentRepository.save(courseStudent);
   }
+
+  async getOneByStudent(
+    idCourse: number,
+    idStudent: number,
+  ): Promise<CourseStudent> {
+    return (await this.courseStudentRepository.findCourseForStudent(
+      idStudent,
+      idCourse,
+    )).orElseThrow(() => new NotFoundException());
+  }
+
+  async getAllByCourse(idCourse: number): Promise<CourseStudent[]> {
+    return this.courseStudentRepository.findAllForCourse(idCourse);
+  }
+
+  async clockIn(
+    courseStudent: CourseStudent,
+    date: Date,
+  ): Promise<CourseStudent> {
+    courseStudent.clockInHour = date;
+    return await this.courseStudentRepository.save(courseStudent);
+  }
 }
