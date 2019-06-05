@@ -7,10 +7,16 @@ export class CourseStudentRepository extends Repository<CourseStudent> {
   async findOneById(id: number): Promise<Optional<CourseStudent>> {
     return Optional.ofNullable(
       await this.findOne(id, {
-        relations: ['user'],
+        relations: ['user', 'course'],
       }),
     );
   }
+
+  // async findCourseForStudent(idStudent: number, idCourse: number): Promise<Optional<CourseStudent>> {
+  //   return Optional.ofNullable(
+  //     await this.findOne({})
+  //   )
+  // }
 
   async findAllAbsencesByUser(
     idUser: number,
@@ -18,8 +24,9 @@ export class CourseStudentRepository extends Repository<CourseStudent> {
     return Optional.ofNullable(
       await this.createQueryBuilder('courseStudent')
         .leftJoinAndSelect('courseStudent.student', 'student')
-        .andWhere('app.student = idUser', { id: idUser })
-        .andWhere('app.clockInHour is null')
+        .leftJoinAndSelect('courseStudent.course', 'course')
+        .andWhere('courseStudent.student = idUser', { id: idUser })
+        .andWhere('courseStudent.clockInHour is null')
         .getMany(),
     );
   }

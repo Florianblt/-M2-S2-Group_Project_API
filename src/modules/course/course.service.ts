@@ -4,6 +4,7 @@ import {
   NotFoundException,
   Inject,
   forwardRef,
+  BadRequestException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CourseRepository } from './course.repository';
@@ -13,6 +14,7 @@ import { PromoService } from '../promo/promo.service';
 import { ClassroomService } from '../classroom/classroom.service';
 import { UserService } from '../users/users.service';
 import { CourseStudentService } from '../course-student/course-student.service';
+import { ROLES } from '../users/roles.constants';
 
 @Injectable()
 export class CourseService {
@@ -55,7 +57,11 @@ export class CourseService {
     const teacherFound = (await this.userService.getOneById(
       newCourseDto.idTeacher,
     )).orElseThrow(() => new NotFoundException());
-    course.teacher = teacherFound;
+    if (teacherFound.role === ROLES.TEACHER_USER) {
+      course.teacher = teacherFound;
+    } else {
+      throw new BadRequestException('User is not a teacher');
+    }
 
     const promoFound = await this.promoService.getOneById(newCourseDto.idPromo);
     course.promo = promoFound;
@@ -81,5 +87,11 @@ export class CourseService {
     });
     courseFound = await this.courseRepository.save(courseFound);
     return courseFound;
+  }
+
+  async getActualCourseByClassroom(idClassroom: number): Promise<Course> {
+    return (await this.courseRepository.findActualCourseByClassroom(
+      idClassroom,
+    )).orElseThrow(() => new NotFoundException());
   }
 }

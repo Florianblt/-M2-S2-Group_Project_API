@@ -27,7 +27,7 @@ export class CourseStudentService {
 
   async getAll(): Promise<CourseStudent[]> {
     return this.courseStudentRepository.find({
-      relations: ['student'],
+      relations: ['student', 'course'],
     });
   }
 

@@ -11,6 +11,7 @@ import { RolesGuard } from './guards/roles.guard';
 import { PromoModule } from './modules/promo/promo.module';
 import { CourseModule } from './modules/course/course.module';
 import { CourseStudentModule } from './modules/course-student/course-student.module';
+import { RfidModule } from './modules/rfid/rfid.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { CourseStudentModule } from './modules/course-student/course-student.mod
     PromoModule,
     CourseModule,
     CourseStudentModule,
+    RfidModule,
   ],
   controllers: [AppController],
   providers: [AppService, ClassSerializerInterceptor, RolesGuard],

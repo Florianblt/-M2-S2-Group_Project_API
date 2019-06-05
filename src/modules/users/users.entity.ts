@@ -1,12 +1,5 @@
 import { DbAuditModel } from '../../utils/dbmodel.model';
-import {
-  Column,
-  Entity,
-  ManyToMany,
-  JoinTable,
-  ManyToOne,
-  OneToMany,
-} from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { ApiModelProperty } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
 import { ROLES } from './roles.constants';

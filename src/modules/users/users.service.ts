@@ -2,13 +2,11 @@ import { User } from './users.entity';
 import {
   BadRequestException,
   ConflictException,
-  Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserRepository } from './users.repository';
-// import {  } from './user.constants';
 import {
   UserDtoRegister,
   UserDtoUpdateInfo,
@@ -16,8 +14,6 @@ import {
 } from './users.dto';
 import { Optional } from 'typescript-optional';
 import { compare, genSalt, hash } from 'bcryptjs';
-import { ROLES } from './roles.constants';
-import { Repository } from 'typeorm';
 import { UserDtoSetRoles } from './users.dto';
 
 @Injectable()

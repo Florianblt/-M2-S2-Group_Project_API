@@ -6,9 +6,12 @@ import { Optional } from 'typescript-optional';
 export class RaspberryRepository extends Repository<Raspberry> {
   async findOneByUID(uid: string): Promise<Optional<Raspberry>> {
     return Optional.ofNullable(
-      await this.findOne(uid, {
-        relations: ['classroom'],
-      }),
+      await this.findOne(
+        {
+          uid,
+        },
+        { relations: ['classroom'] },
+      ),
     );
   }
 

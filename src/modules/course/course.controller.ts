@@ -44,6 +44,20 @@ export class CourseController {
     return await this.courseService.getOneById(id);
   }
 
+  @Get('classroom/:id')
+  @ApiResponse({
+    status: 200,
+    description: `The actual course with the matching classroom`,
+    type: Course,
+  })
+  @ApiResponse({ status: 404, description: `Not found.` })
+  async findActualCourseofClassroom(
+    @Param('id', new ParseIntPipe()) id: number,
+  ): Promise<Course> {
+    this.logger.log(`Get /classroom/${id}`);
+    return await this.courseService.getActualCourseByClassroom(id);
+  }
+
   @Post()
   @ApiResponse({
     status: 201,

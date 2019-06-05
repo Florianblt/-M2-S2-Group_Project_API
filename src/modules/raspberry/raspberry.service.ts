@@ -32,8 +32,10 @@ export class RaspberryService {
     return raspberry.orElseThrow(() => new NotFoundException());
   }
 
-  async getOneByUID(uid: string): Promise<Optional<Raspberry>> {
-    return this.raspberryRepository.findOneByUID(uid);
+  async getOneByUID(uid: string): Promise<Raspberry> {
+    return (await this.raspberryRepository.findOneByUID(uid)).orElseThrow(
+      () => new NotFoundException(`Raspberry not found`),
+    );
   }
 
   async create(newRapsberryDto: NewRaspberryDto): Promise<Raspberry> {
