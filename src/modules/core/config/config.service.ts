@@ -36,7 +36,6 @@ export class ConfigService {
         .default('debug'),
       DATABASE_URL: Joi.string().required(),
       JWT_SECRET: Joi.string().required(),
-      LOG_SQL_REQUEST: Joi.boolean().default(false),
     });
 
     const { error, value: validatedEnvConfig } = Joi.validate(
