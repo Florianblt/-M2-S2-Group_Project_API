@@ -29,6 +29,8 @@ export class CourseStudentRepository extends Repository<CourseStudent> {
 
   async findAllForCourse(idCourse: number): Promise<CourseStudent[]> {
     return await this.createQueryBuilder('courseStudent')
+      .leftJoinAndSelect('courseStudent.student', 'student')
+      .leftJoinAndSelect('courseStudent.course', 'course')
       .where('courseStudent.course = :idCourse', { idCourse })
       .getMany();
   }
