@@ -51,7 +51,11 @@ export class RfidService {
     switch (userFound.role) {
       case ROLES.TEACHER_USER:
         if (courseFound.teacher.id === userFound.id) {
-          if (courseFound.clockInBeginning === courseFound.hourEnding) {
+          if (
+            courseFound.clockInBeginning.getTime() -
+              courseFound.hourEnding.getTime() ===
+            0
+          ) {
             await this.courseService.startCourse(courseFound.id);
           }
         } else {
